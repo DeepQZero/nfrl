@@ -53,7 +53,7 @@ draw.rectangle((1100, 0, 1200, 533), fill=120, outline=0)
 
 draw.line((900, 0, 900, 533), fill=0, width=2)
 
-for player in defensive:
+for player in all_players:
     positions = all_positions[player]
     color = 0 if player in offensive else 255
     first_pos = positions[0]
@@ -67,4 +67,7 @@ for player in defensive:
         draw.line((new_first_pos, new_second_pos), fill=color, width=5)
 
 img.show()
-img.save("the_play.png", "PNG")
+# img.save("the_play.png", "PNG")
+
+new_img = img.resize((150, 68))
+new_img.show()
