@@ -135,3 +135,4 @@ dmypy.json
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
 /.idea/.gitignore
+/data/game_data/
