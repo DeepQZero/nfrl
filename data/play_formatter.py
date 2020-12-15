@@ -32,9 +32,9 @@ class PlayFormatter:
         return player_dict
 
     def det_off(self, player_team, home, away, poss):
-        if player_team == home and home == poss:
+        if player_team == 'home' and home == poss:
             return 'off'
-        elif player_team == away and away == poss:
+        elif player_team == 'away' and away == poss:
             return 'off'
         else:
             return 'def'
@@ -51,6 +51,5 @@ class PlayFormatter:
         return player_dict
 
 
-formatter = PlayFormatter()
-playss = formatter.format_play('2018090600', '75')
-print(playss)
+# formatter = PlayFormatter()
+# routes = formatter.format_play('2018090600', '75')

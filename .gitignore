@@ -136,3 +136,4 @@ dmypy.json
 /.idea/vcs.xml
 /.idea/.gitignore
 /data/game_data/
+/data/play_pictures/

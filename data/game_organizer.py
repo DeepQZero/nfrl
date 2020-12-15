@@ -57,5 +57,5 @@ class GamePickler:
         return delta.total_seconds()
 
 
-pickler = GamePickler()
-pickler.pickle_all_games()
+# pickler = GamePickler()
+# pickler.pickle_all_games()

@@ -38,4 +38,4 @@ def unpickler(filename):
 # np.save(r'numpy_data\all_weeks.npy', old_matrix)
 
 
-pickler(r'raw_data\plays.csv', r'numpy_data\plays.npy')
+# pickler(r'raw_data\plays.csv', r'numpy_data\plays.npy')
