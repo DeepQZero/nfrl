@@ -6,8 +6,8 @@ import pickle
 
 class GamePickler:
     def __init__(self):
-        self.game_matrix = conv.unpickler(r'numpy_data\games.npy')
-        self.play__matrix = conv.unpickler(r'numpy_data\plays.npy')
+        self.game_matrix = conv.unpickler(r'raw_data/numpy_data\games.npy')
+        self.play__matrix = conv.unpickler(r'raw_data/numpy_data\plays.npy')
 
     def pickle_all_games(self):
         for idx, game_id in enumerate(np.unique(self.game_matrix[1:, 0])):
@@ -25,7 +25,7 @@ class GamePickler:
         plays = self.get_game_plays(game_id, game[5])
         game_data = {'id': game[0], 'home': game[3], 'away': game[4],
                      'week': game[5], 'plays': plays}
-        pickle.dump(game_data, open(r'game_data\game' + str(game_id) + r'.p', 'wb'))
+        pickle.dump(game_data, open(r'polished_data\game' + str(game_id) + r'.p', 'wb'))
 
     def init_play_dicts(self, game_id):
         plays = {}

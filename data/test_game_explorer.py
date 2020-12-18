@@ -3,9 +3,9 @@ import datetime
 import pickle
 
 
-# game_data = pickle.load(open(r'game_data\game2018090600.p', 'rb'))
-# print(game_data.keys())
-# plays = game_data['plays']
+# polished_data = pickle.load(open(r'polished_data\game2018090600.p', 'rb'))
+# print(polished_data.keys())
+# plays = polished_data['plays']
 # for key in plays.keys():
 #     stamps = plays[key]['stamps']
 #     num_stamps = len(stamps)
@@ -16,9 +16,9 @@ import pickle
 #     print(num_stamps, num_players, num_stamps / num_players)
 
 
-# game_data = pickle.load(open(r'game_data\game2018090600.p', 'rb'))
-# print(game_data.keys())
-# plays = game_data['plays']
+# polished_data = pickle.load(open(r'polished_data\game2018090600.p', 'rb'))
+# print(polished_data.keys())
+# plays = polished_data['plays']
 # for key in plays.keys():
 #     print(plays[key].keys())
 #     stamps = plays[key]['stamps']

@@ -128,12 +128,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /data/raw_data/
-/data/numpy_data/
+/data/raw_data/numpy_data/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/nfrl.iml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
 /.idea/.gitignore
-/data/game_data/
+/data/polished_data/
 /data/play_pictures/
+/autoencoder/snapshots/

@@ -8,7 +8,7 @@ class PlayFormatter:
         pass
 
     def format_play(self, game_id, play_id):
-        game_file = r'game_data\game' + game_id + '.p'
+        game_file = r'polished_data\game' + game_id + '.p'
         game_data = pickle.load(open(game_file, 'rb'))
         return self.arrange_data(game_data['plays'][play_id]['stamps'],
                                  game_data['home'], game_data['away'],

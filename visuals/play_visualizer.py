@@ -12,7 +12,7 @@ class PlayVisualizer:
         self.team = team
 
     def det_los(self):
-        play__matrix = conv.unpickler(r'numpy_data\plays.npy')
+        play__matrix = conv.unpickler(r'raw_data/numpy_data\plays.npy')
         for play in play__matrix[1:, :]:
             if play[1] == self.play_id and play[0] == self.game_id:
                 return int(play[19]) * 10
@@ -45,7 +45,7 @@ class PlayVisualizer:
             self.plot_pic()
 
     def not_plottable(self):
-        play__matrix = conv.unpickler(r'numpy_data\plays.npy')
+        play__matrix = conv.unpickler(r'raw_data/numpy_data\plays.npy')
         for play in play__matrix[1:, :]:
             if play[1] == self.play_id and play[0] == self.game_id:
                 if play[19] == '':
@@ -76,7 +76,7 @@ class PlayVisualizer:
         # img.show()
         new_img = img.crop((left_bound, 16, right_bound, 516))
         new_img = new_img.resize((37, 62), Image.ANTIALIAS)
-        filename = r'play_pictures\pic-' + self.team + '-' + self.game_id + "-" + self.play_id + '.png'
+        filename = 'play_pictures\\' + self.team + '\\' + self.game_id + "-" + self.play_id + '.png'
         new_img.save(filename, 'PNG', quality=100)
 
 
