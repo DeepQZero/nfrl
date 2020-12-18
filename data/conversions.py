@@ -2,40 +2,34 @@ import csv
 import numpy as np
 
 
-def pickler(filename, outname):
+def pickler(filename: str, outname: str) -> None:
+    """Pickles a file and saves it to a specified path."""
+    print('PICKLING FILE: ' + filename)
     all_data = []
     with open(filename, newline='') as csvfile:
-        spamreader = csv.reader(csvfile)
-        for row in spamreader:
+        reader = csv.reader(csvfile)
+        for row in reader:
             all_data.append(row)
     final_data = np.array(all_data)
     np.save(outname, final_data)
+    print('PICKLING FILE: ' + filename + ' IS COMPLETE')
 
 
-# e.g. Windows: pickler(r'raw_data\week1.csv', r'numpy_data\week1.npy')
-
-
-def unpickler(filename):
+def unpickler(filename) -> np.array:
+    """Unpickles numpy file. This code is primarily for personal reference."""
     return np.load(filename)
 
 
-# e.g. Windows: unpickler(r'numpy_data\week1.npy')
+def pickle_all_csv_files() -> None:
+    """Pickles all of the .csv data files"""
+    for week in range(1, 18):
+        filename = 'raw_data/csv_files/week' + str(week) + '.csv'
+        outname = 'raw_data/numpy_data/week' + str(week) + '.npy'
+        pickler(filename, outname)
+    pickler('raw_data/csv_files/plays.csv', 'raw_data/numpy_data/plays.npy')
+    pickler('raw_data/csv_files/players.csv', 'raw_data/numpy_data//players.npy')
+    pickler('raw_data/csv_files/games.csv', 'raw_data/numpy_data//games.npy')
 
 
-# for i in range(1, 18, 1):
-#     print(i)
-#     week = i
-#     filename = r'raw_data\week' + str(week) + '.csv'
-#     outname = r'numpy_data\week' + str(week) + '.npy'
-#     pickler(filename, outname)
-
-
-# old_matrix = unpickler(r'numpy_data\week1.npy')
-# for i in range(2, 18, 1):
-#     print(i)
-#     new_matrix = unpickler(r'numpy_data\week' + str(i) + '.npy')
-#     old_matrix = np.concatenate((old_matrix, new_matrix), axis=0)
-# np.save(r'numpy_data\all_weeks.npy', old_matrix)
-
-
-# pickler(r'raw_data\plays.csv', r'numpy_data\plays.npy')
+if __name__ == '__main__':
+    pickle_all_csv_files()
