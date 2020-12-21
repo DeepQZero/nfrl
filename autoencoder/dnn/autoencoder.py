@@ -45,17 +45,13 @@ no_transform = transforms.Compose([transforms.ToTensor()])
 grey_transform = transforms.Compose([transforms.Grayscale(num_output_channels=1),
                                      transforms.ToTensor()])
 
-try_set = datasets.ImageFolder('data\\play_pictures\\', transform=grey_transform)
+try_set = datasets.ImageFolder('data/', transform=grey_transform)
 data_loader = torch.utils.data.DataLoader(try_set, batch_size=1, shuffle=True)
+# TODO data loader train_workers=0, change????
 
-# trainset = torchvision.datasets.MNIST(root='data', train=True,
-#                                       download=False, transform=no_transform)
-
-# trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
-#                                           shuffle=True, num_workers=0)
-
-
+# device = "cuda"
 # the_net = Net()
+# the_net.to(device)
 # criterion = nn.MSELoss()
 # optimizer = optim.Adam(the_net.parameters(), lr=0.001)
 #
@@ -63,7 +59,7 @@ data_loader = torch.utils.data.DataLoader(try_set, batch_size=1, shuffle=True)
 #     running_loss = []
 #     for batch_idx, (data, _) in enumerate(data_loader):
 #         new_data = torch.flatten(data, start_dim=1, end_dim=3)
-#         target_new_data = new_data.detach()
+#         target_new_data = new_data.detach().to(device)
 #         optimizer.zero_grad()
 #         outputs = the_net(target_new_data)
 #         loss = criterion(outputs, target_new_data)
@@ -73,11 +69,11 @@ data_loader = torch.utils.data.DataLoader(try_set, batch_size=1, shuffle=True)
 #         running_loss.append(loss.item())
 #         if batch_idx % 1000 == 0:
 #             print('Epoch: ', epoch, ', Batch: ', batch_idx, ', Loss: ', np.mean(running_loss))
-#     torch.save(the_net.state_dict(), 'autoencoder_' + str(epoch+1))
+#     torch.save(the_net.state_dict(), 'snapshots/autoencoder_' + str(epoch+1))
 
 
 model = Net()
-model.load_state_dict(torch.load('autoencoder_49'))
+model.load_state_dict(torch.load('snapshots/autoencoder_49'))
 
 
 for batch_idx, (data, lab) in enumerate(data_loader):

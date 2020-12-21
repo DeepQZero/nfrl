@@ -137,4 +137,5 @@ dmypy.json
 /.idea/.gitignore
 /data/polished_data/
 /data/play_pictures/
-/autoencoder/snapshots/
+/autoencoder/dnn/snapshots/
+/autoencoder/dnn/data/def/
