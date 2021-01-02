@@ -3,35 +3,37 @@ import pickle
 
 
 class GameOrganizer:
-    """Sorts AWS timestamp data into standalone dictionaries; polishes data."""
+    """Sorts AWS timestamp data into standalone dictionaries per game."""
     def __init__(self) -> None:
         """Loads small data files."""
-        self.game_matrix = np.load('raw_data/numpy_data/games.npy')
-        self.play_matrix = np.load('raw_data/numpy_data/plays.npy')
+        self.game_mat = np.load('raw_data/numpy_data/games.npy')
+        self.play_mat = np.load('raw_data/numpy_data/plays.npy')
 
-    def polish_all_games(self) -> None:
-        """Main function. Polishes all play data sequentially."""
-        for idx, game in enumerate(self.game_matrix[1:, :]):
+    def organize_all_games(self) -> None:
+        """Sorts and creates game dictionary holding all data about game."""
+        for idx, gamestamp in enumerate(self.game_mat[1:, :]):
             print('PICKLING GAME NUMBER: ' + str(idx+1))
-            self.polish_one_game(game)
+            self.organize_one_game(gamestamp)
 
-    def polish_one_game(self, game: np.ndarray) -> None:
-        """Polishes data from a single game."""
-        play_data = {'game': game,
-                     'plays': self.get_plays(game),
-                     'stamps': self.get_stamps(game)}
-        outfile = 'raw_data/game_dicts/' + game[0] + '.p'
-        pickle.dump(play_data, open(outfile, 'wb'))
+    def organize_one_game(self, gamestamp: np.ndarray) -> None:
+        """Collect and organize data from a single game.
+           Uses game id as identifier in filename."""
+        gmae_data = {'game': gamestamp,
+                     'plays': self.get_playstamps(gamestamp),
+                     'stamps': self.get_timestamps(gamestamp)}
+        outfile = 'raw_data/game_dicts/' + gamestamp[0] + '.p'
+        pickle.dump(gmae_data, open(outfile, 'wb'))
 
-    def get_stamps(self, game: np.ndarray) -> list:
-        week_matrix = np.load('raw_data/numpy_data/week' + str(game[5]) + '.npy')
-        return [stamp for stamp in week_matrix[1:] if stamp[15] == game[0]]
+    def get_playstamps(self, game: np.ndarray) -> list:
+        """Gets every playstamp that shares same game id."""
+        return [stamp for stamp in self.play_mat[1:] if game[0] == stamp[0]]
 
-    def get_plays(self, game: np.ndarray) -> list:
-        """Places AWS stamps into corresponding plays for current game."""
-        return [play for play in self.play_matrix[1:] if game[0] == play[0]]
+    def get_timestamps(self, game: np.ndarray) -> list:
+        """Gets every timestamp that shares same game id."""
+        week_mat = np.load('raw_data/numpy_data/week' + str(game[5]) + '.npy')
+        return [stamp for stamp in week_mat[1:] if stamp[15] == game[0]]
 
 
 if __name__ == "__main__":
     organizer = GameOrganizer()
-    organizer.polish_all_games()
+    organizer.organize_all_games()
