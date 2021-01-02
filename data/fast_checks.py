@@ -59,6 +59,7 @@ def check_los():
     play_matrix = np.load('../data/raw_data/numpy_data/plays.npy')
     for play in play_matrix[1:, :]:
         if not check_float(play[19]):
+            print(play[19])
             all_bad.append(play[0] + play[1])
             print('NOT FLOAT: ', len(play[19]))
         else:
@@ -215,4 +216,4 @@ def check_plays_sizes():
 
 
 if __name__ == "__main__":
-    check_team()
+    check_los()

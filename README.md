@@ -1,20 +1,27 @@
 # nfrl
-Reinforcement learning with NFL tracking data.
+_Reverse Engineering NFL tracking data._
 
+## Hardware
 
-**Packages**
+- 75 GB Storage required
+- 8-core CPU recommended 
+- Nvidia GPU recommended
 
- - `pip install Pillow`
- - `pip install numpy`
+## **Installation Instructions**
 
-**Installation Instructions**
+1. Linux
+- Create virtual environment.
+- `pip install Pillow`
+- `pip install numpy`
+- Create folders...
 
-1. Windows
-- create Conda environment
+## FILES
 
-2. Linux
-
-**Files**
+- file_conversions
+- game_organizer
+- fast_checks
+- play_polisher
+- play_pics
 
 data\utils: 
 - Converts csv file to numpy array file

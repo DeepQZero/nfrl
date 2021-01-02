@@ -140,8 +140,8 @@ def cluster_chart():
     plt.show()
 
 
-def get_labels():
-    return np.load('labels.npy')
+def get_labels(filename='labels'):
+    return np.load(filename)
 
 
 def save_labels(labels, name='labels'):
@@ -260,7 +260,8 @@ def new_team_epas_2(labels):
     data = np.load('all_play_data.npy')
     plays = np.load('../../data/raw_data/numpy_data/plays.npy')
     all_teams = np.unique(plays[1:, 6])
-    team_mapper = {team: np.zeros(200) for team in all_teams}
+    n_labels = len(np.unique(labels))
+    team_mapper = {team: np.zeros(n_labels) for team in all_teams}
     game_play_dict = {}
     for play in plays[1:, :]:
         game_id, play_id = play[0], play[1]
@@ -281,7 +282,7 @@ def new_team_epas_2(labels):
     # new_data = scaler.transform(new_data)
     # print(new_data.shape)
     # print(new_data)
-    num_c = 16
+    num_c = 4
     new_labels = agglomerative_cluster(new_data, num_c)
     # print(all_teams, new_labels)
     x = list(zip(all_teams, new_labels))
@@ -296,11 +297,11 @@ def new_team_epas_2(labels):
 
 
 if __name__ == "__main__":
-    # data = transform_data()
-    # score, labels = k_mean_cluster(data, 200)
-    # save_labels(labels)
+    data = transform_data()
+    score, labels = k_mean_cluster(data, 100)
+    save_labels(labels, 'labels_100')
     # show_pictures(get_labels(), 92)
     # print_formation(get_labels(), 4)
     # print_all_formations(get_labels())
     # epa_plotter()
-    new_team_epas_2(get_labels())
+    new_team_epas_2(get_labels('labels_100.npy'))
