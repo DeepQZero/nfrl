@@ -6,31 +6,33 @@ import os
 
 class PlayVisualizer:
     """Creates .png graphic of game play for first 3 seconds."""
-    def __init__(self, play_file) -> None:
+    def __init__(self, play_file: str, granularity: int) -> None:
         """Initialize fields."""
         self.game_id = None
         self.play_id = None
         self.ball_snap = None
         self.los = None
-        self.player_dict = None
+        self.player_info = None
         self.play_direction = None
         self.off_players = None
         self.def_players = None
+        self.gran = granularity
         self.init_everything(play_file)
 
-    def init_everything(self, play_file):
+    def init_everything(self, play_file: str) -> None:
+        """Fills fields with values."""
         infile = 'polished_data/play_dicts/' + play_file
-        game_dict = pickle.load(open(infile, "rb"))
-        self.game_id = game_dict['game_id']
-        self.play_id = game_dict['play_id']
-        self.ball_snap = game_dict['ball_snap']
-        self.los = game_dict['los']
-        self.player_dict = game_dict['player_dict']
-        self.play_direction = game_dict['play_direction']
-        self.off_players = game_dict['off_players']
-        self.def_players = game_dict['def_players']
+        play_dict = pickle.load(open(infile, "rb"))
+        self.game_id = play_dict['game_id']
+        self.play_id = play_dict['play_id']
+        self.ball_snap = play_dict['ball_snap']
+        self.los = play_dict['los']
+        self.player_info = play_dict['player_info']
+        self.play_direction = play_dict['play_direction']
+        self.off_players = play_dict['off_players']
+        self.def_players = play_dict['def_players']
 
-    def det_bounds(self, team):
+    def det_bounds(self, team: str) -> tuple:
         """Determines the direction to crop the image."""
         direction, los = self.play_direction, self.los
         if direction == 'left' and team == 'def':
@@ -38,13 +40,14 @@ class PlayVisualizer:
         elif direction == 'right' and team == 'def':
             return los+18, los+48
         elif direction == 'left' and team == 'off':
-            return los+10, los+40
-        elif direction == 'right' and team == 'off':
             return los, los+30
+        elif direction == 'right' and team == 'off':
+            return los+10, los+40
         else:
             raise Exception('Incorrect direction or side')
 
-    def plot_all(self, team):
+    def plot_all(self, team: str) -> None:
+        """Plots plays of specified teams and saves pictures."""
         if team == 'def':
             self.plot_pic('def')
         elif team == 'off':
@@ -55,31 +58,60 @@ class PlayVisualizer:
         else:
             pass
 
-    def plot_pic(self, team) -> None:
-        platoon = self.off_players if team == 'off' else self.def_players
-        img = Image.new('L', (2 * 160, 2 * 54), color=0)
+    def plot_pic(self, team: str) -> None:
+        """Plots a single play for specified team and saves picture."""
+        img = Image.new('L', (self.gran * 160, self.gran * 54), color=0)
         draw = ImageDraw.Draw(img)
-        # draw.line((self.los+20, 0, self.los+20, 54), fill=255, width=1)
+        platoon = self.off_players if team == 'off' else self.def_players
         for player_id in platoon:
-            route = self.player_dict[player_id]
-            snap_route = route[self.ball_snap - 1:]
-            x_pos, y_pos = snap_route[0][1], snap_route[0][2]
-            draw.rectangle((2 * (int(x_pos) + 19), 2 * (int(y_pos) + 1),
-                           2 * (int(x_pos) + 21), 2 * (int(y_pos) -1)), fill=255)
-            for i in range(min(len(snap_route) - 1, 29)):
-                first_pos = 2 * int((snap_route[i][1]) + 20), 2 * int(snap_route[i][2])
-                second_pos = 2 * int((snap_route[i+1][1]) + 20), 2 * int(snap_route[i+1][2])
-                draw.line((first_pos, second_pos), fill=255, width=2 * 1)
-        left_bound, right_bound = self.det_bounds(team)
-        new_img = img.crop((2 * left_bound, 0, 2 * right_bound, 2 * 54))
-        if self.play_direction == 'left':
-            new_img = new_img.transpose(Image.FLIP_LEFT_RIGHT)
-        filename = 'play_pictures/' + team + '/' + self.game_id + "-" + self.play_id + '.png'
+            self.draw_player_route(player_id, draw)
+        new_img = self.crop_flip_image(team, img)
+        filename = 'play_pictures/' + team + '/' + \
+                   self.game_id + "-" + self.play_id + '.png'
         new_img.save(filename, 'PNG', quality=100)
 
+    def draw_player_route(self, player_id: str,
+                          draw: ImageDraw.ImageDraw) -> None:
+        """Draws entire single route for player and start square."""
+        route = self.player_info[player_id]
+        snap_route = route[self.ball_snap - 1:]
+        self.plot_square(snap_route[0], draw)
+        for frame in range(min(len(snap_route) - 1, 30)):
+            self.draw_route_frame(snap_route, frame, draw)
 
-def pooler(play_file):
-    polisher = PlayVisualizer(play_file)
+    def plot_square(self, route_start: dict,
+                    draw: ImageDraw.ImageDraw) -> None:
+        """Plots square to signify player at start of route."""
+        x_pos, y_pos = route_start['x_pos'], route_start['y_pos']
+        draw.rectangle((self.gran * (int(x_pos) + self.gran * 10 - 1),
+                        self.gran * (int(y_pos) + 1),
+                        self.gran * (int(x_pos) + self.gran * 10 + 1),
+                        self.gran * (int(y_pos) - 1)), fill=255)
+
+    def draw_route_frame(self, route: list, frame: int,
+                         draw: ImageDraw.ImageDraw) -> None:
+        """Draws single frame of route for single player."""
+        first_pos = (self.gran * int((route[frame]['x_pos']) + 20),
+                     self.gran * int(route[frame]['y_pos']))
+        second_pos = (self.gran * int((route[frame + 1]['x_pos']) + 20),
+                      self.gran * int(route[frame + 1]['y_pos']))
+        draw.line((first_pos, second_pos), fill=255, width=self.gran*1)
+
+    def crop_flip_image(self, team: str, image: Image.Image) -> Image.Image:
+        """Crops and possibly flips image."""
+        left_bound, right_bound = self.det_bounds(team)
+        new_img = image.crop((self.gran * left_bound,
+                              self.gran * 0,
+                              self.gran * right_bound,
+                              self.gran * 54))
+        if self.play_direction == 'left':
+            new_img = new_img.transpose(Image.FLIP_LEFT_RIGHT)
+        return new_img
+
+
+def pooler(play_file: str) -> None:
+    "Plots a single play. Used for multiprocessing."
+    polisher = PlayVisualizer(play_file, granularity=2)
     polisher.plot_all('all')
 
 
