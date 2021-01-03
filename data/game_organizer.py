@@ -18,11 +18,11 @@ class GameOrganizer:
     def organize_one_game(self, gamestamp: np.ndarray) -> None:
         """Collect and organize data from a single game.
            Uses game id as identifier in filename."""
-        gmae_data = {'game': gamestamp,
+        game_data = {'game': gamestamp,
                      'plays': self.get_playstamps(gamestamp),
                      'stamps': self.get_timestamps(gamestamp)}
         outfile = 'raw_data/game_dicts/' + gamestamp[0] + '.p'
-        pickle.dump(gmae_data, open(outfile, 'wb'))
+        pickle.dump(game_data, open(outfile, 'wb'))
 
     def get_playstamps(self, game: np.ndarray) -> list:
         """Gets every playstamp that shares same game id."""
