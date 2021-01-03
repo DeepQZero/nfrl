@@ -1,5 +1,6 @@
 import numpy as np
 import datetime
+import os
 
 
 def check_unique_game_ids():
@@ -213,6 +214,12 @@ def check_plays_sizes():
     for play in play_matrix[1:, :]:
         the_sum += 1
     print(the_sum)
+
+
+def count_folder_files():
+    path, dirs, files = next(os.walk("play_pictures/def"))
+    file_count = len(files)
+    print(file_count)
 
 
 if __name__ == "__main__":

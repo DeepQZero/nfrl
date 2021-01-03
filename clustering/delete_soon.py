@@ -36,7 +36,8 @@ def cluster_counts(labels, num_clusters: int):
 
 
 def show_pictures(labels, choice=92):
-    X = np.load('all_play_data.npy')
+    X = np.load('../autoencoder/all_play_data.npy')
+    print(X.shape)
     num = list(labels).count(choice)
     first_dim = num // 10 + 1
     count = 0
@@ -52,7 +53,7 @@ def show_pictures(labels, choice=92):
 
 
 def print_formation(labels, choice):
-    data = np.load('all_play_data.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
     all_info = []
     for idx, label in enumerate(labels):
         if label == choice:
@@ -65,8 +66,8 @@ def print_formation(labels, choice):
 
 
 def print_all_formations(labels):
-    data = np.load('all_play_data.npy')
-    plays = np.load('../../data/raw_data/numpy_data/plays.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
+    plays = np.load('../data/raw_data/numpy_data/plays.npy')
     num_labels = len(np.unique(labels))
     all_epas = [[] for _ in range(num_labels)]
     game_play_dict = {}
@@ -85,8 +86,8 @@ def print_all_formations(labels):
 
 
 def new_team_epas(labels):
-    data = np.load('all_play_data.npy')
-    plays = np.load('../../data/raw_data/numpy_data/plays.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
+    plays = np.load('../data/raw_data/numpy_data/plays.npy')
     all_teams = np.unique(plays[1:, 6])
     team_mapper = {team: [] for team in all_teams}
     game_play_dict = {}
@@ -121,7 +122,7 @@ def epa_plotter():
 
 
 def get_info(game_id, play_id):
-    plays = np.load('../../data/raw_data/numpy_data/plays.npy')
+    plays = np.load('../data/raw_data/numpy_data/plays.npy')
     for play in plays[1:, :]:
         if game_id == play[0] and play_id == play[1]:
             return play[25]
@@ -157,7 +158,7 @@ def run_pca(data):
 
 
 def transform_data():
-    data = np.load('all_play_data.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
     scaler = preprocessing.StandardScaler().fit(data[:, 1:])
     X_scaled = scaler.transform(data[:, 1:])
     return X_scaled
@@ -199,7 +200,7 @@ team_records = {'BUF': 6.0,
 
 
 def new_team_epas_1(labels):
-    data = np.load('all_play_data.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
     cluster_dict = create_cluster_dict(np.unique(labels))
     all_teams = team_records.keys()
     team_mapper = {team: [] for team in all_teams}
@@ -239,7 +240,7 @@ def create_cluster_dict(labels):
 
 
 def create_game_play_dict():
-    plays = np.load('../../data/raw_data/numpy_data/plays.npy')
+    plays = np.load('../data/raw_data/numpy_data/plays.npy')
     game_play_dict = {}
     for play in plays[1:, :]:
         game_id, play_id = play[0], play[1]
@@ -257,8 +258,8 @@ def det_math(path: str):
 
 
 def new_team_epas_2(labels):
-    data = np.load('all_play_data.npy')
-    plays = np.load('../../data/raw_data/numpy_data/plays.npy')
+    data = np.load('../autoencoder/all_play_data.npy')
+    plays = np.load('../data/raw_data/numpy_data/plays.npy')
     all_teams = np.unique(plays[1:, 6])
     n_labels = len(np.unique(labels))
     team_mapper = {team: np.zeros(n_labels) for team in all_teams}
@@ -297,11 +298,14 @@ def new_team_epas_2(labels):
 
 
 if __name__ == "__main__":
-    data = transform_data()
-    score, labels = k_mean_cluster(data, 100)
-    save_labels(labels, 'labels_100')
-    # show_pictures(get_labels(), 92)
-    # print_formation(get_labels(), 4)
-    # print_all_formations(get_labels())
-    # epa_plotter()
-    new_team_epas_2(get_labels('labels_100.npy'))
+    X = np.load('all_play_data.npy')
+    print(X.shape)
+    print('hi')
+    # data = transform_data()
+    # score, labels = k_mean_cluster(data, 100)
+    # save_labels(labels, 'labels_100')
+    # # show_pictures(get_labels(), 92)
+    # # print_formation(get_labels(), 4)
+    # # print_all_formations(get_labels())
+    # # epa_plotter()
+    # new_team_epas_2(get_labels('../autoencoder/labels_100.npy'))

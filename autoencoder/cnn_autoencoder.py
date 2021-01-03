@@ -9,7 +9,7 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
 import matplotlib.pyplot as plt
-import PIL.Image as Image
+
 
 class ConvAutoencoder(nn.Module):
     def __init__(self):
@@ -72,6 +72,11 @@ class ConvAutoencoder(nn.Module):
         return x
 
 
+# torch.manual_seed(0)
+# np.random.seed(0)
+# torch.backends.cudnn.benchmark = False
+# torch.set_deterministic(True)
+
 no_transform = transforms.Compose(
     [transforms.ToTensor()])
 
@@ -83,76 +88,62 @@ print(try_set.imgs[1])
 
 data_loader = torch.utils.data.DataLoader(try_set, batch_size=1, shuffle=False)
 
-# device = "cuda"
-# the_net = ConvAutoencoder().to(device)
-# criterion = nn.MSELoss()
-# optimizer = optim.Adam(the_net.parameters(), lr=1e-3)
-#
-# for epoch in range(50):
-#     running_loss = []
-#     for batch_idx, (data, _) in enumerate(data_loader):
-#         target_new_data = data.detach().to(device)
-#         optimizer.zero_grad()
-#         outputs = the_net(target_new_data)
-#         loss = criterion(outputs, target_new_data)
-#         loss.backward()
-#         optimizer.step()
-#
-#         running_loss.append(loss.item())
-#         if batch_idx % 1000 == 0:
-#             print('Epoch: ', epoch, ', Batch: ', batch_idx, ', Loss: ', np.mean(running_loss))
-#     torch.save(the_net.state_dict(), 'snapshots/defense/conv_autoencoder_' + str(epoch+1))
+
+def train(path='snapshots/defense/conv_autoencoder_'):
+    device = "cuda"
+    the_net = ConvAutoencoder().to(device)
+    criterion = nn.MSELoss()
+    optimizer = optim.Adam(the_net.parameters(), lr=1e-3)
+
+    for epoch in range(50):
+        running_loss = []
+        for batch_idx, (data, _) in enumerate(data_loader):
+            target_new_data = data.detach().to(device)
+            optimizer.zero_grad()
+            outputs = the_net(target_new_data)
+            loss = criterion(outputs, target_new_data)
+            loss.backward()
+            optimizer.step()
+
+            running_loss.append(loss.item())
+            if batch_idx % 1000 == 0:
+                print('Epoch: ', epoch,
+                      ', Batch: ', batch_idx,
+                      ', Loss: ', np.mean(running_loss))
+        torch.save(the_net.state_dict(), path + str(epoch+1))
 
 
-# model = ConvAutoencoder()
-# model.load_state_dict(torch.load('snapshots/defense/conv_autoencoder_30'))
-#
-# for batch_idx, (data, lab) in enumerate(data_loader):
-#     print(lab)
-#     plt.imshow(data.numpy()[0][0], cmap='gray')
-#     plt.show()
-#     output = model(torch.flatten(data, start_dim=1, end_dim=1))
-#     output.detach_()
-#     plt.imshow(output.reshape(108, 60).numpy(), cmap='gray')
-#     plt.show()
-#     break
+def show_pic(path='snapshots/defense/conv_autoencoder_'):
+    model = ConvAutoencoder()
+    model.load_state_dict(torch.load(path))
+
+    for batch_idx, (data, lab) in enumerate(data_loader):
+        print(lab)
+        plt.imshow(data.numpy()[0][0], cmap='gray')
+        plt.show()
+        output = model(torch.flatten(data, start_dim=1, end_dim=1))
+        output.detach_()
+        plt.imshow(output.reshape(108, 60).numpy(), cmap='gray')
+        plt.show()
+        break
 
 
-model = ConvAutoencoder()
-model.load_state_dict(torch.load('snapshots/defense/conv_autoencoder_30'))
-
-xs, ys = [], []
-
-
-
-# for batch_idx, (data, lab) in enumerate(data_loader, 0):
-#     plt.imshow(data.numpy()[0][0], cmap='gray')
-#     image = torch.flatten(data, start_dim=1, end_dim=1)
-#     output = model.encode(image)
-#     xs.append(output[0][0][0].item())
-#     ys.append(output[0][0][1].item())
-#
-# print(min(xs), max(xs))
-# print(min(ys), max(ys))
-
-# loader = transforms.Compose([transforms.Scale(imsize), transforms.ToTensor()])
-
-# datasets.
-# image = Image.open('data/defense/def/2018090600-75.png')
-# # image.show()
-# image = grey_transform(image)
+def check_bounds(path='snapshots/defense/conv_autoencoder_30'):
+    model = ConvAutoencoder()
+    model.load_state_dict(torch.load(path))
+    xs, ys = [], []
+    for batch_idx, (data, lab) in enumerate(data_loader, 0):
+        plt.imshow(data.numpy()[0][0], cmap='gray')
+        image = torch.flatten(data, start_dim=1, end_dim=1)
+        output = model.encode(image)
+        xs.append(output[0][0][0].item())
+        ys.append(output[0][0][1].item())
+    print(min(xs), max(xs))
+    print(min(ys), max(ys))
 
 
+# TODO save encodings in matrix.
 
-# imsize = 256
-# loader = transforms.Compose([transforms.Scale(imsize), transforms.ToTensor()])
-#
-# def image_loader(image_name):
-#     """load image, returns cuda tensor"""
-#     image = Image.open(image_name)
-#     image = loader(image).float()
-#     image = Variable(image, requires_grad=True)
-#     image = image.unsqueeze(0)  #this is for VGG, may not be needed for ResNet
-#     return image.cuda()  #assumes that you're using GPU
-#
-# image = image_loader(PATH TO IMAGE)
+
+if __name__ == '__main__':
+    print('hi')

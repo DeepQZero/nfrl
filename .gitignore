@@ -139,5 +139,5 @@ dmypy.json
 /data/play_pictures/
 /autoencoder/dnn/snapshots/
 /autoencoder/dnn/data/def/
-/autoencoder/cnn/data/
-/autoencoder/cnn/snapshots/
+/autoencoder/data/
+/autoencoder/snapshots/
