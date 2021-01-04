@@ -217,7 +217,7 @@ def check_plays_sizes():
 
 
 def count_folder_files():
-    path, dirs, files = next(os.walk("play_pictures/def"))
+    path, dirs, files = next(os.walk("../cleaning/play_pictures/def"))
     file_count = len(files)
     print(file_count)
 

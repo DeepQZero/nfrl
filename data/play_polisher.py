@@ -26,7 +26,7 @@ class PlayPolisher:
 
     def load_data(self) -> None:
         """Loads game dictionary and fills corresponding fields."""
-        game_dict_file = "raw_data/game_dicts/" + self.game_id + ".p"
+        game_dict_file = "raw_data/dictionaries/games/" + self.game_id + ".p"
         game_dict = pickle.load(open(game_dict_file, "rb"))
         self.gamestamp = game_dict['game']
         self.playstamp = self.get_playstamp(game_dict['plays'])
@@ -114,7 +114,7 @@ class PlayPolisher:
                      'off_players': self.off_players,
                      'def_players': self.def_players,
                      'football': self.football}
-        outfile = 'polished_data/play_dicts/' + \
+        outfile = 'dictionaries/plays/' + \
                   self.game_id + '-' + self.play_id + '.p'
         pickle.dump(play_dict, open(outfile, 'wb'))
 
@@ -224,7 +224,7 @@ def pooler(playstamp: np.ndarray) -> None:
 
 
 if __name__ == "__main__":
-    play_matrix = np.load('../data/raw_data/numpy_data/plays.npy')
+    play_matrix = np.load('/raw_data/numpy_data/kaggle/plays.npy')
     plays = play_matrix[1:, :]
     p = Pool(6)
     p.map(pooler, plays)

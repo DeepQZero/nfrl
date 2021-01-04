@@ -141,3 +141,6 @@ dmypy.json
 /autoencoder/dnn/data/def/
 /autoencoder/data/
 /autoencoder/snapshots/
+/data/raw_data/
+/data/dictionaries/
+/data/dictionaries/
