@@ -7,8 +7,10 @@ def create_data_folders() -> None:
     # os.makedirs("raw_data/numpy_data/kaggle")
     # os.makedirs("raw_data/csv_files/nfl_scrapr")
     # os.makedirs("raw_data/numpy_data/nfl_scrapr")
-    os.makedirs("dictionaries/games")
-    os.makedirs("dictionaries/plays")
+    # os.makedirs("dictionaries/games")
+    # os.makedirs("dictionaries/plays")
+    os.makedirs("play_pics/def/class_1")
+    os.makedirs("play_pics/off/class_1")
 
 
 if __name__ == "__main__":

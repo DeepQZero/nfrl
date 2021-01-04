@@ -3,42 +3,55 @@ import datetime
 import os
 
 
-def check_unique_game_ids():
-    game_matrix = np.load('../data/raw_data/numpy_data/games.npy')
-    print(len(np.unique(game_matrix[1:, 0])))
-    print(len(game_matrix[1:, 0]))
+def check_unique_game_ids() -> bool:
+    """Determines if game ids are all unique."""
+    game_matrix = np.load('raw_data/numpy_data/kaggle/games.npy')
+    unique_game_ids = len(np.unique(game_matrix[1:, 0]))
+    all_game_ids = len(game_matrix[1:, 0])
+    return unique_game_ids == all_game_ids
 
 
-def check_game_id_lengths():
-    game_matrix = np.load('../data/raw_data/numpy_data/games.npy')
+def check_game_id_lengths() -> bool:
+    """Determines if game ids are all the same length."""
+    bad_ids = []
+    game_matrix = np.load('raw_data/numpy_data/kaggle/games.npy')
     for id in game_matrix[1:, 0]:
         if len(id) != 10:
-            print(id)
+            bad_ids.append(id)
+    return len(bad_ids) == len(game_matrix[1:, 0])
 
 
-def check_unique_play_game_ids():
-    play_matrix = np.load('../data/raw_data/numpy_data/plays.npy')
+def check_unique_play_game_ids() -> bool:
+    """Determines if all play_id + game_id combos are unique."""
+    play_matrix = np.load('raw_data/numpy_data/kaggle/plays.npy')
     all_play_game_ids = []
     for play in play_matrix[1:, :]:
         all_play_game_ids.append(play[0]+play[1])
-    print(len(np.unique(all_play_game_ids)))
-    print(len(play_matrix[1:, 1]))
+    unique_play_game_ids = len(np.unique(all_play_game_ids))
+    all_play_game_ids = len(play_matrix[1:, 1])
+    return unique_play_game_ids == all_play_game_ids
 
 
-def check_play_id_lengths():
-    play_matrix = np.load('../data/raw_data/numpy_data/plays.npy')
+def check_play_id_lengths() -> bool:
+    """Determines if play ids are at least length 2."""
+    play_matrix = np.load('raw_data/numpy_data/kaggle/plays.npy')
+    bad_ids = []
     for id in play_matrix[1:, 1]:
         if len(id) < 2:
-            print(id)
+            bad_ids.append(id)
+    return len(bad_ids) > 0
 
 
-def check_correct_game_id_in_play():
-    game_matrix = np.load('../data/raw_data/numpy_data/games.npy')
+def check_correct_game_id_in_play() -> bool:
+    """Determines if each play's game id is a valid game id."""
+    game_matrix = np.load('raw_data/numpy_data/kaggle/games.npy')
     all_game_ids = set(game_matrix[1:, 0])
-    play_matrix = np.load('../data/raw_data/numpy_data/plays.npy')
+    play_matrix = np.load('raw_data/numpy_data/kaggle/plays.npy')
+    bad_plays = []
     for play in play_matrix[1:, :]:
         if play[0] not in all_game_ids:
-            print(play[0])
+            bad_plays.append(play[0])
+    return len(bad_plays) > 0
 
 
 def check_correct_game_id_play_id_in_stamp():
@@ -217,10 +230,10 @@ def check_plays_sizes():
 
 
 def count_folder_files():
-    path, dirs, files = next(os.walk("../cleaning/play_pictures/def"))
+    path, dirs, files = next(os.walk("play_pics/def/class_1"))
     file_count = len(files)
     print(file_count)
 
 
 if __name__ == "__main__":
-    check_los()
+    count_folder_files()

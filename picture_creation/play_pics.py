@@ -10,7 +10,7 @@ class PlayVisualizer:
         """Initialize fields."""
         self.game_id = None
         self.play_id = None
-        self.ball_snap = None
+        self.snap_frame = None
         self.los = None
         self.player_info = None
         self.play_direction = None
@@ -21,11 +21,11 @@ class PlayVisualizer:
 
     def init_everything(self, play_file: str) -> None:
         """Fills fields with values."""
-        infile = 'polished_data/play_dicts/' + play_file
+        infile = '../data/dictionaries/plays/' + play_file
         play_dict = pickle.load(open(infile, "rb"))
         self.game_id = play_dict['game_id']
         self.play_id = play_dict['play_id']
-        self.ball_snap = play_dict['ball_snap']
+        self.snap_frame = play_dict['snap_frame']
         self.los = play_dict['los']
         self.player_info = play_dict['player_info']
         self.play_direction = play_dict['play_direction']
@@ -66,7 +66,7 @@ class PlayVisualizer:
         for player_id in platoon:
             self.draw_player_route(player_id, draw)
         new_img = self.crop_flip_image(team, img)
-        filename = 'play_pictures/' + team + '/' + \
+        filename = '../data/play_pics/' + team + '/class_1/' + \
                    self.game_id + "-" + self.play_id + '.png'
         new_img.save(filename, 'PNG', quality=100)
 
@@ -74,7 +74,7 @@ class PlayVisualizer:
                           draw: ImageDraw.ImageDraw) -> None:
         """Draws entire single route for player and start square."""
         route = self.player_info[player_id]
-        snap_route = route[self.ball_snap - 1:]
+        snap_route = route[self.snap_frame - 1:]
         self.plot_square(snap_route[0], draw)
         for frame in range(min(len(snap_route) - 1, 30)):
             self.draw_route_frame(snap_route, frame, draw)
@@ -116,7 +116,7 @@ def pooler(play_file: str) -> None:
 
 
 if __name__ == "__main__":
-    path, dirs, files = next(os.walk("../data/polished_data/play_dicts"))
+    path, dirs, files = next(os.walk("../data/dictionaries/plays"))
     p = Pool(6)
     p.map(pooler, files)
     p.close()

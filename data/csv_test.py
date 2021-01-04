@@ -45,9 +45,9 @@ def pickle_all_csv_files() -> None:
         filename = 'raw_data/csv_files/week' + str(week) + '.csv'
         outname = 'raw_data/numpy_data/week' + str(week) + '.npy'
         csv_pickler(filename, outname)
-    csv_pickler('raw_data/csv_files/plays.csv', 'raw_data/numpy_data/plays.npy')
-    csv_pickler('raw_data/csv_files/players.csv', 'raw_data/numpy_data/players.npy')
-    csv_pickler('raw_data/csv_files/games.csv', 'raw_data/numpy_data/games.npy')
+    csv_pickler('../cleaning/raw_data/csv_files/plays.csv', 'raw_data/numpy_data/plays.npy')
+    csv_pickler('../cleaning/raw_data/csv_files/players.csv', 'raw_data/numpy_data/players.npy')
+    csv_pickler('../cleaning/raw_data/csv_files/games.csv', 'raw_data/numpy_data/games.npy')
 
 
 def create_game_dict():
@@ -157,7 +157,7 @@ def create_stats(play_stats, game_stats):
 if __name__ == '__main__':
     game_dict = create_game_dict()
     play_dict = {}
-    filename = 'raw_data/csv_files/big-play-by-play.csv'
+    filename = '../cleaning/raw_data/csv_files/big-play-by-play.csv'
     with open(filename, newline='') as csvfile:
         reader = csv.reader(csvfile)
         counter = 0

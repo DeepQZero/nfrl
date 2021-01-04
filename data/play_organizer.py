@@ -6,7 +6,7 @@ from data_utils import check_float
 import operator
 
 
-class PlayPolisher:
+class PlayOrganizer:
     """Creates a polished play dictionary that is ready for image creation."""
     def __init__(self, game_id: str, play_id: str) -> None:
         """Sets all fields and loads necessary game data."""
@@ -26,7 +26,7 @@ class PlayPolisher:
 
     def load_data(self) -> None:
         """Loads game dictionary and fills corresponding fields."""
-        game_dict_file = "raw_data/dictionaries/games/" + self.game_id + ".p"
+        game_dict_file = "dictionaries/games/" + self.game_id + ".p"
         game_dict = pickle.load(open(game_dict_file, "rb"))
         self.gamestamp = game_dict['game']
         self.playstamp = self.get_playstamp(game_dict['plays'])
@@ -219,12 +219,12 @@ class PlayPolisher:
 def pooler(playstamp: np.ndarray) -> None:
     """Converts all plays with valid info to pickle objects."""
     game_id, play_id = playstamp[0], playstamp[1]
-    polisher = PlayPolisher(game_id, play_id)
+    polisher = PlayOrganizer(game_id, play_id)
     polisher.polish()
 
 
 if __name__ == "__main__":
-    play_matrix = np.load('/raw_data/numpy_data/kaggle/plays.npy')
+    play_matrix = np.load('raw_data/numpy_data/kaggle/plays.npy')
     plays = play_matrix[1:, :]
     p = Pool(6)
     p.map(pooler, plays)
