@@ -36,7 +36,7 @@ def cluster_counts(labels, num_clusters: int):
 
 
 def show_pictures(labels, choice=92):
-    X = np.load('../autoencoder/all_play_data.npy')
+    X = np.load('../to_delete_last/all_play_data.npy')
     print(X.shape)
     num = list(labels).count(choice)
     first_dim = num // 10 + 1
@@ -53,7 +53,7 @@ def show_pictures(labels, choice=92):
 
 
 def print_formation(labels, choice):
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     all_info = []
     for idx, label in enumerate(labels):
         if label == choice:
@@ -66,7 +66,7 @@ def print_formation(labels, choice):
 
 
 def print_all_formations(labels):
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     plays = np.load('../data/raw_data/numpy_data/plays.npy')
     num_labels = len(np.unique(labels))
     all_epas = [[] for _ in range(num_labels)]
@@ -86,7 +86,7 @@ def print_all_formations(labels):
 
 
 def new_team_epas(labels):
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     plays = np.load('../data/raw_data/numpy_data/plays.npy')
     all_teams = np.unique(plays[1:, 6])
     team_mapper = {team: [] for team in all_teams}
@@ -158,7 +158,7 @@ def run_pca(data):
 
 
 def transform_data():
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     scaler = preprocessing.StandardScaler().fit(data[:, 1:])
     X_scaled = scaler.transform(data[:, 1:])
     return X_scaled
@@ -200,7 +200,7 @@ team_records = {'BUF': 6.0,
 
 
 def new_team_epas_1(labels):
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     cluster_dict = create_cluster_dict(np.unique(labels))
     all_teams = team_records.keys()
     team_mapper = {team: [] for team in all_teams}
@@ -258,7 +258,7 @@ def det_math(path: str):
 
 
 def new_team_epas_2(labels):
-    data = np.load('../autoencoder/all_play_data.npy')
+    data = np.load('../to_delete_last/all_play_data.npy')
     plays = np.load('../data/raw_data/numpy_data/plays.npy')
     all_teams = np.unique(plays[1:, 6])
     n_labels = len(np.unique(labels))

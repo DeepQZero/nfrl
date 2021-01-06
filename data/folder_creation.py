@@ -15,6 +15,18 @@ def create_data_folders() -> None:
     # os.makedirs("autoencoder/net_snapshots/off")
     # os.makedirs("autoencoder/compressions/def")
     # os.makedirs("autoencoder/compressions/off")
+    # os.makedirs("clustering/plays/def")
+    # os.makedirs("clustering/plays/off")
+    # os.makedirs("clustering/play_pics/def")
+    # os.makedirs("clustering/play_pics/off")
+    # os.makedirs("clustering/playbook/def")
+    # os.makedirs("clustering/playbook/off")
+    # os.makedirs("clustering/playbook_pics/def")
+    # os.makedirs("clustering/playbook_pics/off")
+    # os.makedirs("win_probability/pbp_data")
+    # os.makedirs("dictionaries/final_scores")
+    # os.makedirs("win_probability/snapshots")
+    os.makedirs("dictionaries/possessions")
 
 
 if __name__ == "__main__":
