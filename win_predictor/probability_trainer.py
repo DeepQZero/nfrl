@@ -22,8 +22,8 @@ play_mat = np.load('../data/win_probability/pbp_data/all_pbp_data.npy')
 
 print(len(np.unique(play_mat[:, 1])))
 
-X = play_mat[:, 2:9].astype(np.float32)
-y = play_mat[:, 9].astype(np.float32)
+X = play_mat[:, 2:8].astype(np.float32)
+y = play_mat[:, 8].astype(np.float32)
 y = y.reshape(-1, 1)
 
 print(X.shape)
@@ -38,9 +38,9 @@ batch_size = 8
 
 class PrepareData(Dataset):
     def __init__(self, X, y):
-        self.scaler = StandardScaler()
-        self.scaler.fit(X)
-        X = self.scaler.transform(X)
+        # self.scaler = StandardScaler()
+        # self.scaler.fit(X)
+        # X = self.scaler.transform(X)
         self.X = torch.from_numpy(X)
         self.y = torch.from_numpy(y)
 
@@ -68,7 +68,7 @@ test_set = DataLoader(ds, batch_size=batch_size,
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(7, 6)
+        self.fc1 = nn.Linear(6, 6)
         self.fc2 = nn.Linear(6, 5)
         self.fc3 = nn.Linear(5, 4)
         self.fc4 = nn.Linear(4, 3)
@@ -88,7 +88,7 @@ class Net(nn.Module):
 def train():
     the_net = Net()
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(the_net.parameters(), lr=1e-4)
+    optimizer = optim.Adam(the_net.parameters(), lr=1e-3)
 
     for epoch in range(10):
         running_loss = []
@@ -109,7 +109,7 @@ def train():
 
 def check():
     model = Net()
-    model.load_state_dict(torch.load('../data/win_probability/snapshots/predictor_10'))
+    model.load_state_dict(torch.load('../data/win_probability/snapshots/predictor_1'))
 
     # play_dict['quarter'] = int(row[17])
     # play_dict['posteam_score'] = int(row[52])
@@ -120,7 +120,12 @@ def check():
     # play_dict['time_left'] = int(row[12])
     # play_dict['det_reward'] = det_reward(row, final_score_dict)
 
-    fake_data = ds.scale_trans(np.array([[1, 0, 0, 1, 10, 25, 3600]], dtype=np.float32))
+    fake_data = np.array([[1, 0, 0, 1, 10, 3600]], dtype=np.float32)
+    fake_data = torch.tensor(fake_data)
+    output = model(fake_data)
+    print(output)
+
+    fake_data = np.array([[1, 0, 0, 2, 10, 3600]], dtype=np.float32)
     fake_data = torch.tensor(fake_data)
     output = model(fake_data)
     print(output)
@@ -152,7 +157,7 @@ def test():
 
 
 def plot():
-    game = '2018092305'
+    game = '2018092313'
     year = 2018
     predictions, times = [], []
     the_net = Net()
@@ -177,7 +182,7 @@ def plot():
                 play_data.append(det_yard_to_go(row))
                 play_data.append(int(row[12]))
                 print(play_data)
-                fake_data = ds.scale_trans(np.array([play_data], dtype=np.float32))
+                fake_data = np.array([play_data], dtype=np.float32)
                 outputs = the_net(torch.tensor(fake_data))
                 print(outputs)
                 prediction = outputs[0].item()
@@ -240,7 +245,7 @@ def det_yard_to_go(row):
 
 if __name__ == '__main__':
     # train()
-    # check()
+    check()
     # observe()
     # test()
-    plot()
+    # plot()
