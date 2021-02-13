@@ -36,6 +36,7 @@ class PlayCluster:
         num = list(data[:, -1]).count(label)
         first_dim = num // 10 + 1
         fig = plt.figure(figsize=(20, 20))
+        plt.axis('off')
         count = 0
         for row in data:
             if label == row[-1]:
@@ -43,6 +44,7 @@ class PlayCluster:
                     str(int(row[0])) + '-' + str(int(row[1])) + '.png'
                 image = Image.open(pic_path)
                 ax = fig.add_subplot(first_dim, 10, count + 1)
+                ax.axis('off')
                 ax.imshow(image, cmap='gray')
                 count += 1
         path = '../data/clustering/play_pics/' + \
@@ -71,6 +73,6 @@ if __name__ == '__main__':
     clusterer = PlayCluster()
     # clusterer.cluster_plays('def', 200)
     # clusterer.cluster_plays('off', 200)
-    # clusterer.save_all_pictures('def', 200)
+    clusterer.save_all_pictures('def', 200)
     # clusterer.save_all_pictures('off', 200)
     # clusterer.cluster_sizes('def')

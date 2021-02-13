@@ -68,7 +68,7 @@ test_set = DataLoader(ds, batch_size=batch_size,
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(6, 6)
+        self.fc1 = nn.Linear(7, 6)
         self.fc2 = nn.Linear(6, 5)
         self.fc3 = nn.Linear(5, 4)
         self.fc4 = nn.Linear(4, 3)
@@ -203,10 +203,15 @@ def plot():
                         times.append(3600 - int(time_left))
 
     print(predictions)
-    plt.plot(times, predictions)
-    plt.axhline(0.5)
-    plt.axhline(0.75)
-    plt.axhline(0.25)
+    plt.plot(times, predictions, linewidth=3)
+    plt.axhline(0.5, linestyle='--', linewidth=0.5)
+    plt.axvline(1800, linestyle='--', linewidth=0.5)
+    plt.axvline(900, linestyle='--', linewidth=0.5)
+    plt.axvline(2700, linestyle='--', linewidth=0.5)
+    plt.ylim(top=1.0, bottom=0.0)
+    plt.ylabel('Home Team (DET) Win Probability')
+    plt.xlabel('Seconds Elapsed')
+    plt.title('New England Patriots vs. Detroit Lions 09/23/18')
     plt.show()
 
 
@@ -245,7 +250,7 @@ def det_yard_to_go(row):
 
 if __name__ == '__main__':
     # train()
-    check()
+    # check()
     # observe()
     # test()
-    # plot()
+    plot()

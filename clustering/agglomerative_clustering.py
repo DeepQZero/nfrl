@@ -77,13 +77,13 @@ class PlaybookCluster:
                         str(int(row[0])) + '-' + str(int(row[1])) + '.png'
                     image = Image.open(pic_path)
                     ax = fig.add_subplot(first_dim, 20, count + 1)
+                    ax.axis('off')
                     ax.imshow(image, cmap='gray')
                     count += 1
                     break
-        # path = '../data/clustering/play_pics/' + \
-        #        team + '/cluster_' + str(label)
-        # plt.savefig(path)
-        # plt.close()
+        path = '../agglom.png'
+        plt.savefig(path)
+        plt.close()
         plt.show()
 
 
